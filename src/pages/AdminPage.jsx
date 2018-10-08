@@ -8,7 +8,7 @@ const propTypes = {
 
 export const AdminPage = (props) => {
     console.log(props);
-    if (!props.isAdmin) {
+    if (props.user.role !== 'admin') {
         return <Redirect to = "/" />
     }
     return(

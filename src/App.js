@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import {LoginPage} from './pages/LoginPage';
 import {AdminPage} from './pages/AdminPage';
 import {UserPage} from './pages/UserPage';
-import {authentification} from './mock/fakeAuth';
+import {authorization} from './mock/fakeAuth';
 
 
 
@@ -17,16 +17,18 @@ class App extends Component {
   }
 
   auth(userName, password) {
-    authentification(userName, password)
+    console.log(`1st auth call... User name: ${userName}, password: ${password}`);
+    authorization(userName, password)
       .then((user) => {
         this.setState({
           user: user
         })
       })
-      .catch((errorMsg) => {
-        this.setState({
-          errorMsg: errorMsg.msg
-        })
+      .catch((error) => {
+        console.log(error);
+        // this.setState({
+        //   errorMsg: error.value
+        // })
       });
 
   }
@@ -35,13 +37,19 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path = "/" component = {LoginPage}/>
-          <Route path = "/admin" 
-            render = {props => <AdminPage user = {user} />
-            }
-          // component = {AdminPage} isAdmin = {true}
+          <Route exact path = "/" 
+            render = {props => <LoginPage auth = {this.auth} user = {this.state.user}/>}  
+            // component = {LoginPage}
           />
-          <Route path = "/user" component = {UserPage}/>
+          {(this.state.user) && (this.state.user.role === 'admin') && <Route path = "/admin" 
+            render = {props => <AdminPage user = {this.state.user} />
+            }
+          
+          // component = {AdminPage} isAdmin = {true}
+          />}
+          {(this.state.user) && (this.state.user.role === 'user') && <Route path = "/user"
+            render = {props => <UserPage user = {this.state.user} />}  
+          />}
         </Switch>
       </Router>
     );

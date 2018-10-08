@@ -1,4 +1,4 @@
-export const authorithation = (username, password) => {
+export const authorization = (username, password) => {
     return new Promise((resolve, reject) => {
         if(username === 'admin' && password === 'admin') {
             resolve({
