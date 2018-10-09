@@ -13,7 +13,9 @@ import {authorization} from './mock/fakeAuth';
 class App extends Component {
   state = {
     user : null,
-    errorMsg : ''
+    errorMsg : '',
+    userName : '',
+    password: ''
   }
 
   auth(userName, password) {
@@ -22,7 +24,8 @@ class App extends Component {
       .then((user) => {
         this.setState({
           user: user
-        })
+        });
+        console.log("User: ", user);
       })
       .catch((error) => {
         console.log(error);
@@ -33,12 +36,46 @@ class App extends Component {
 
   }
 
+  onChangeHandler = (event) => {
+    // console.log(event.target.name);
+    switch (event.target.name) {
+      case 'userName':
+        this.setState({
+          userName: event.target.value
+        });
+        // console.log('userNAme setState...')
+        break;
+      case 'password':
+          this.setState({
+            password: event.target.value
+          });
+          // console.log('password setState...')
+        break;
+      default:
+        break;
+    }
+    this.setState({
+      // userName: event.target.
+    })
+  }
+
+  onLoginBtnClickHandler = () => {
+    console.log("Login Clicked: ", this.state.userName, this.state.password)
+    this.auth(this.state.userName, this.state.password);
+  }
+
   render() {
     return (
       <Router>
         <Switch>
           <Route exact path = "/" 
-            render = {props => <LoginPage auth = {this.auth} user = {this.state.user}/>}  
+            render = {props => <LoginPage 
+                                  auth = {this.auth} 
+                                  user = {this.state.user} 
+                                  onChange={this.onChangeHandler}
+                                  userName={this.state.userName}
+                                  password={this.state.password}
+                                  btnLoginHandler={this.onLoginBtnClickHandler}/>}  
             // component = {LoginPage}
           />
           {(this.state.user) && (this.state.user.role === 'admin') && <Route path = "/admin" 

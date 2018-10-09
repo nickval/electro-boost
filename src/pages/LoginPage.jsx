@@ -2,32 +2,17 @@ import React from 'react';
 import PropType from 'prop-types';
 
 export const LoginPage = (props) => {
-    const userName = '';
-    const password = '';
-    // props.user = {
-    //     name : '',
 
-    // }
-    function onInputChange(event) {
-        console.log(event.target.value);
-        [event.target.name] = event.target.value;
-    }
     return(
         <div>Login page:
             <div className = "userInput">
-                User Name: <input defaultValue = {userName} onChange = {onInputChange} type = "text" name="name" />
-            </div>
-
-            {/* {props.user = {
-                name : 'Nick',
-                password : '123456',
-                role : 'admin'
-            }} */}
-            <div>
-                Password: <input defaultValue = {password} onChange = {onInputChange} type = "text" name="pasword" />
+                User Name: <input value = {props.userName} onChange={props.onChange} type = "text" name="userName" />
             </div>
             <div>
-                <button className = "LoginButton" onClick = {() => props.auth(userName, password)}>Login</button>
+                Password: <input value = {props.password} onChange={props.onChange} type = "password" name="password" />
+            </div>
+            <div>
+                <button className = "LoginButton" onClick = {props.btnLoginHandler}>Login</button>
             </div>
         </div>
     )
