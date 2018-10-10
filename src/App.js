@@ -29,7 +29,7 @@ class App extends Component {
         this.setState({
           user: user
         });
-        this.history.push(`/${user.userRole}`, this.state);
+        this.history.push({pathname: `/${user.userRole}`, state: {user}});
         console.log("User: ", user);
       })
       .catch((error) => {
