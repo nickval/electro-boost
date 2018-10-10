@@ -14,7 +14,7 @@ import {TestPage} from './pages/TestPage';
 
 class App extends Component {
   state = {
-    user : {userRole: 'user'},
+    user : null,
     errorMsg : '',
     userName : '',
     password: ''
