@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
-import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 // import logo from './logo.svg';
 import './App.css';
 import {LoginPage} from './pages/LoginPage';
 import {AdminPage} from './pages/AdminPage';
 import {UserPage} from './pages/UserPage';
 import {authorization} from './mock/fakeAuth';
+import {createBrowserHistory} from 'history';
+import {TestPage} from './pages/TestPage';
 
 
 
 
 class App extends Component {
   state = {
-    user : null,
+    user : {userRole: 'user'},
     errorMsg : '',
     userName : '',
     password: ''
   }
+
+  history = createBrowserHistory();
 
   auth(userName, password) {
     console.log(`1st auth call... User name: ${userName}, password: ${password}`);
@@ -25,6 +29,7 @@ class App extends Component {
         this.setState({
           user: user
         });
+        this.history.push(`/${user.userRole}`);
         console.log("User: ", user);
       })
       .catch((error) => {
@@ -65,6 +70,7 @@ class App extends Component {
   }
 
   render() {
+    console.log('user on render: ', this.state.user);
     return (
       <Router>
         <Switch>
@@ -78,14 +84,18 @@ class App extends Component {
                                   btnLoginHandler={this.onLoginBtnClickHandler}/>}  
             // component = {LoginPage}
           />
-          {(this.state.user) && (this.state.user.role === 'admin') && <Route path = "/admin" 
+          {(this.state.user) && <Route path = "/admin" 
             render = {props => <AdminPage user = {this.state.user} />
             }
           
           // component = {AdminPage} isAdmin = {true}
           />}
-          {(this.state.user) && (this.state.user.role === 'user') && <Route path = "/user"
+          {(this.state.user) && (this.state.user.userRole === 'user') && <Route path = "/user"
             render = {props => <UserPage user = {this.state.user} />}  
+          />}
+          {/* <Route path = "/test" component = {TestPage} /> */}
+          {<Route path = "/test"
+            render = {render => <TestPage user = {this.state.user} />}
           />}
         </Switch>
       </Router>

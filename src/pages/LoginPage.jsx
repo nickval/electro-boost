@@ -1,5 +1,5 @@
 import React from 'react';
-import PropType from 'prop-types';
+// import PropType from 'prop-types';
 
 export const LoginPage = (props) => {
 
