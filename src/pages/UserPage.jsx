@@ -1,4 +1,5 @@
 import React from 'react';
+import {withRouter} from 'react-router-dom';
 // import PropType from 'prop-types';
 
 export const UserPage = () => {
@@ -6,3 +7,5 @@ export const UserPage = () => {
         <div>UserPage</div>
     )
 }
+
+export default withRouter(UserPage);

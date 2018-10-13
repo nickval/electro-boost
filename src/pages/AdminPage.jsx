@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Redirect} from 'react-router-dom';
+import {Redirect ,withRouter} from 'react-router-dom';
 
 // const propTypes = {
 //     isAdmin : PropTypes.bool.isRequired
@@ -15,5 +15,7 @@ export const AdminPage = (props) => {
         <div>AdminPage</div>
     )
 }
+
+export default withRouter(AdminPage);
 
 // AdminPage.PropTypes = propTypes;
