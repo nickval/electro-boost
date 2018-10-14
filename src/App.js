@@ -1,36 +1,33 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-// import logo from './logo.svg';
 import './App.css';
 import {LoginPage} from './pages/LoginPage';
 import {AdminPage} from './pages/AdminPage';
 import {UserPage} from './pages/UserPage';
 import {authorization} from './mock/fakeAuth';
-import {createBrowserHistory} from 'history';
+// import {createBrowserHistory} from 'history';
 import {TestPage} from './pages/TestPage';
-
-
-
+import {LogOut} from './pages/LogOutPage';
+import Redirect from 'react-router-dom/Redirect';
 
 class App extends Component {
   state = {
     user : null,
     errorMsg : '',
     userName : '',
-    password: ''
+    password: '',
+    logOut: false,
   }
 
-  history = createBrowserHistory();
+  // history = createBrowserHistory();
 
   auth(userName, password) {
-    console.log(`1st auth call... User name: ${userName}, password: ${password}`);
     authorization(userName, password)
       .then((user) => {
         this.setState({
           user: user
         });
-        this.history.push({pathname: `/${user.userRole}`, state: {user}});
-        console.log("User: ", user);
+        // this.history.push({pathname: `/${user.userRole}`, state: {user}});
       })
       .catch((error) => {
         console.log(error);
@@ -69,10 +66,24 @@ class App extends Component {
     this.auth(this.state.userName, this.state.password);
   }
 
+  onLogoutBtnClickHandler = () => {
+    this.setState({
+      user: null,
+      logOut: true,
+    })
+  }
+
   render() {
     console.log('user on render: ', this.state.user);
+    const state = this.state;
     return (
-      <Router>
+      <div>
+        {state.user && <div className = "Header">
+          <button onClick = {this.onLogoutBtnClickHandler}>Log out</button>
+        </div>}
+        {/* {state.logOut && <Redirect to = "/" />} */}
+        <div className = "Main">
+        <Router>
         <Switch>
           <Route exact path = "/" 
             render = {props => <LoginPage 
@@ -81,24 +92,20 @@ class App extends Component {
                                   onChange={this.onChangeHandler}
                                   userName={this.state.userName}
                                   password={this.state.password}
-                                  btnLoginHandler={this.onLoginBtnClickHandler}/>}  
-            // component = {LoginPage}
+                                  btnLoginHandler={this.onLoginBtnClickHandler}
+                                  logOut={this.state.logOut}/>}  
           />
-          {(this.state.user) && <Route path = "/admin" 
-            render = {props => <AdminPage user = {this.state.user} />
-            }
-          
-          // component = {AdminPage} isAdmin = {true}
+          {(state.user) && (state.user.userRole === 'admin') && <Route path = "/admin" 
+            render = {(props) => <AdminPage {...props} user = {this.state.user} />}
           />}
-          {(this.state.user) && (this.state.user.userRole === 'user') && <Route path = "/user"
-            render = {props => <UserPage user = {this.state.user} />}  
-          />}
-          {/* <Route path = "/test" component = {TestPage} /> */}
-          {<Route path = "/test"
-            render = {render => <TestPage user = {this.state.user} />}
+          {(state.user) && (state.user.userRole === 'user') && <Route path = "/user"
+            render = {props => <UserPage {...props} user = {this.state.user} />}  
           />}
         </Switch>
       </Router>
+
+        </div>
+      </div>
     );
   }
 }
