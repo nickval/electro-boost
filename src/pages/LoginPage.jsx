@@ -4,22 +4,17 @@ import {Redirect} from 'react-router-dom';
 
 export const LoginPage = (props) => {
     return(
-        <div className = "LoginPage">
-            {props.user && props.user.userRole === "admin" && <Redirect to="/admin" />}
-            {props.user && props.user.userRole === "user" && <Redirect to="/user" />}
-            {!props.user && <div>      
-                Login page:
-                <div className = "userInput">
-                    User Name: <input value = {props.userName} onChange={props.onChange} type = "text" name="userName" />
-                </div>
-                <div className = "userInput">
-                    Password: <input value = {props.password} onChange={props.onChange} type = "password" name="password" />
-                </div>
-                <div>
+        <div className = "loginPage">
+            <div className = "form">
+                {props.user && props.user.userRole === "admin" && <Redirect to="/admin" />}
+                {props.user && props.user.userRole === "user" && <Redirect to="/user" />}
+                {!props.user && 
+                <form>      
+                    <input value = {props.userName} onChange={props.onChange} type = "text" name="userName" placeholder="username" />
+                    <input value = {props.password} onChange={props.onChange} type = "password" name="password" placeholder="password" />
                     <button className = "LoginButton" onClick = {props.btnLoginHandler}>Login</button>
-                </div>
-            </div>}
+                </form>}
+            </div>
         </div>
-        
     )
 }
