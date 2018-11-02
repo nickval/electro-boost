@@ -42,6 +42,7 @@ class App extends Component {
     // console.log(event.target.name);
     switch (event.target.name) {
       case 'userName':
+        //TODO: add regular expression for verify
         this.setState({
           userName: event.target.value
         });
