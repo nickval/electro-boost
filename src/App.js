@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
 import {LoginPage} from './pages/LoginPage';
+import {RegisterPage} from './pages/RegisterPage';
 import {AdminPage} from './pages/AdminPage';
 import {UserPage} from './pages/UserPage';
 import {authorization} from './mock/fakeAuth';
@@ -16,6 +17,7 @@ class App extends Component {
     errorMsg : '',
     userName : '',
     password: '',
+    confirmPassword: '',
     logOut: false,
   }
 
@@ -51,6 +53,11 @@ class App extends Component {
           });
           // console.log('password setState...')
         break;
+      case 'confirmPassword':
+          this.setState({
+            confirmPassword: event.target.value
+          });
+          break;
       default:
         break;
     }
@@ -69,6 +76,9 @@ class App extends Component {
     this.setState({
       user: null,
       logOut: true,
+      userName : '',
+      password: '',
+      confirmPassword: '',
     });
   }
 
@@ -85,6 +95,16 @@ class App extends Component {
           <Switch>
             <Route exact path = "/" 
               render = {props => <LoginPage 
+                                    auth = {this.auth} 
+                                    user = {this.state.user} 
+                                    onChange={this.onChangeHandler}
+                                    userName={this.state.userName}
+                                    password={this.state.password}
+                                    btnLoginHandler={this.onLoginBtnClickHandler}
+                                    logOut={this.state.logOut}/>}  
+            />
+            <Route exact path = "/register" 
+              render = {props => <RegisterPage 
                                     auth = {this.auth} 
                                     user = {this.state.user} 
                                     onChange={this.onChangeHandler}
