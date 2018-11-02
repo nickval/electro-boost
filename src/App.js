@@ -7,7 +7,7 @@ import {UserPage} from './pages/UserPage';
 import {authorization} from './mock/fakeAuth';
 // import {createBrowserHistory} from 'history';
 import {TestPage} from './pages/TestPage';
-import {LogOut} from './pages/LogOutPage';
+import {LogOutPage} from './pages/LogOutPage';
 import Redirect from 'react-router-dom/Redirect';
 
 class App extends Component {
@@ -19,7 +19,6 @@ class App extends Component {
     logOut: false,
   }
 
-  // history = createBrowserHistory();
 
   auth(userName, password) {
     authorization(userName, password)
@@ -27,7 +26,6 @@ class App extends Component {
         this.setState({
           user: user
         });
-        // this.history.push({pathname: `/${user.userRole}`, state: {user}});
       })
       .catch((error) => {
         console.log(error);
@@ -67,10 +65,11 @@ class App extends Component {
   }
 
   onLogoutBtnClickHandler = () => {
+    console.log("Logout 1st:", this.state.user);
     this.setState({
       user: null,
       logOut: true,
-    })
+    });
   }
 
   render() {
@@ -78,30 +77,32 @@ class App extends Component {
     const state = this.state;
     return (
       <div>
-        {state.user && <div className = "Header">
+        {state.user && <div className = "topHeader">
           <button onClick = {this.onLogoutBtnClickHandler}>Log out</button>
         </div>}
-        {/* {state.logOut && <Redirect to = "/" />} */}
-        <div className = "Main">
+        <div className = "main">
         <Router>
-        <Switch>
-          <Route exact path = "/" 
-            render = {props => <LoginPage 
-                                  auth = {this.auth} 
-                                  user = {this.state.user} 
-                                  onChange={this.onChangeHandler}
-                                  userName={this.state.userName}
-                                  password={this.state.password}
-                                  btnLoginHandler={this.onLoginBtnClickHandler}
-                                  logOut={this.state.logOut}/>}  
-          />
-          {(state.user) && (state.user.userRole === 'admin') && <Route path = "/admin" 
-            render = {(props) => <AdminPage {...props} user = {this.state.user} />}
-          />}
-          {(state.user) && (state.user.userRole === 'user') && <Route path = "/user"
-            render = {props => <UserPage {...props} user = {this.state.user} />}  
-          />}
-        </Switch>
+          <Switch>
+            <Route exact path = "/" 
+              render = {props => <LoginPage 
+                                    auth = {this.auth} 
+                                    user = {this.state.user} 
+                                    onChange={this.onChangeHandler}
+                                    userName={this.state.userName}
+                                    password={this.state.password}
+                                    btnLoginHandler={this.onLoginBtnClickHandler}
+                                    logOut={this.state.logOut}/>}  
+            />
+            {(state.user) && (state.user.userRole === 'admin') && <Route path = "/admin" 
+              render = {(props) => <AdminPage {...props} user = {this.state.user} />}
+            />}
+            {(state.user) && (state.user.userRole === 'user') && <Route path = "/user"
+              render = {props => <UserPage {...props} user = {this.state.user} />}  
+            />}
+            {(state.user == null) && <Route path = "/"
+              render = {(props) => <LogOutPage {...props} />}
+            />}
+          </Switch>
       </Router>
 
         </div>

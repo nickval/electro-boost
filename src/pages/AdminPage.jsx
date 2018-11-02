@@ -12,7 +12,10 @@ export const AdminPage = (props) => {
     //     return <Redirect to = "/" />
     // }
     return(
-        <div>AdminPage</div>
+        <div>AdminPage
+            {!props.user && <Redirect to="/logout" />}
+
+        </div>
     )
 }
 

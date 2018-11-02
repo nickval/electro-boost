@@ -1,8 +1,11 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
 
-export const LogOut = (props) => {
+export const LogOutPage = (props) => {
+    console.log("Logout");
     return(
-        <Redirect to = "/" />
+        <div>
+            <Redirect to = "/" />
+        </div>
     )
 }
